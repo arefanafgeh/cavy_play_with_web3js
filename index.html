@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <script src="/dist/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="/dist/web3.min.js"></script>
+    </head>
+    <body>
+        <div id="loginbox">
+            <button id="walletconnect">Login With Wallet</button>
+        </div>
+    </body>
+    <script src="/dist/contract.js?v=2"></script>
+    <script>
+
+        window.addEventListener('load', async function() {
+
+                const accounts = await ethereum.request({
+                        method: 'eth_requestAccounts',
+                    });
+                    await App.init();
+                    $('#walletconnect').on('click',async function(){
+                        await App.Login();
+                    });
+                   
+                });
+
+               
+                
+    </script>
+</html>
