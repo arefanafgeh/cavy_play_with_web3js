@@ -51,8 +51,9 @@ var web3socket;
                 }
             };
             
-            App.wsprovider = new Web3WsProvider('ws://localhost:8546', options);
+            App.wsprovider = new Web3.providers.WebsocketProvider('ws://localhost:7545', options);
             web3socket = new Web3(App.wsprovider);
+            console.log(web3socket);
          },
          getAccount: async function(){
             
