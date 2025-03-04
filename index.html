@@ -13,13 +13,18 @@
 
         window.addEventListener('load', async function() {
 
-                const accounts = await ethereum.request({
+                    const accounts = await ethereum.request({
                         method: 'eth_requestAccounts',
                     });
                     await App.init();
                     $('#walletconnect').on('click',async function(){
                         await App.Login();
                     });
+
+                    console.log(Web3.modules);
+                    console.log(Web3.version);
+                    console.log(Web3.utils);
+                    console.log(Web3.providers);
                    
                 });
 
