@@ -13,15 +13,22 @@ var web3socket;
             
          },
          initweb3:async function(){
-             if(typeof web3 !=='undefined'){
-                 App.web3provider = window.ethereum;
-                 web3js=new Web3(App.web3provider);
+            /**
+             * the commented section is for getting provider automatically from selected chain of the wallet
+             */
+            //  if(typeof web3 !=='undefined'){
+            //      App.web3provider = window.ethereum;
+            //      web3js=new Web3(App.web3provider);
                  
-             }
-             else{
-                 App.web3provider= Web3.providers.HttpProvider('http://localhost:7545');
+            //  }
+            //  else{
+                 App.web3provider= new Web3.providers.HttpProvider('http://localhost:7545');
                  web3js = new Web3(App.web3provider);
-             }
+             
+            //  }
+
+             const block = await web3js.eth.getBlockNumber();
+             console.log("Current Block:", block);
              await App.configureWebSocker();
              return await App.getAccount();
          },
@@ -53,12 +60,26 @@ var web3socket;
             
             App.wsprovider = new Web3.providers.WebsocketProvider('ws://localhost:7545', options);
             web3socket = new Web3(App.wsprovider);
+             let options2 = { address: '0x9c8C16B6A7e6fDcFc797Bc84CA7947500206b977'};
+                     subscribe = await web3socket.eth.subscribe('logs', options2, (err, res) => {});
+                     subscribe.on("data", (txHash) => {
+                         setTimeout(async () => {
+                         try {
+                             console.log(txHash);
+                             let tx = await App.web3provider.getTransaction(txHash);
+                             console.log(tx)
+                         } catch (err) {
+                             console.error(err);
+                         }
+                         });
+                     });
             console.log(web3socket);
          },
          getAccount: async function(){
             
             var accountInterval = setInterval(function() {
                  web3js.eth.getAccounts().then(async function(accounts){
+                    // console.log(accounts);
                          if(App.account!==accounts[0]){
                                  App.account = accounts[0];
                                  App.render();   
